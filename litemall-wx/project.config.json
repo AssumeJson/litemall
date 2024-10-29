@@ -35,8 +35,8 @@
     "ignoreUploadUnusedFiles": true
   },
   "compileType": "miniprogram",
-  "libVersion": "2.4.0",
-  "appid": "wxa5b486c6b918ecfb",
+  "libVersion": "3.6.3",
+  "appid": "wx18610bcfe5f15fe3",
   "projectname": "litemall-wx",
   "simulatorType": "wechat",
   "simulatorPluginLibVersion": {},
@@ -323,5 +323,13 @@
         }
       ]
     }
+  },
+  "packOptions": {
+    "ignore": [],
+    "include": []
+  },
+  "editorSetting": {
+    "tabIndent": "insertSpaces",
+    "tabSize": 2
   }
 }
