@@ -44,12 +44,13 @@
   ],
   "window": {
     "navigationBarBackgroundColor": "#FFFFFF",
-    "navigationBarTitleText": "litemall小程序商城",
+    "navigationBarTitleText": "AI喜糖",
     "enablePullDownRefresh": false,
     "navigationBarTextStyle": "black",
     "backgroundColor": "#FFFFFF",
-    "backgroundTextStyle": "dark"
+    "backgroundTextStyle": "light"
   },
+  "navigationStyle": "custom",
   "tabBar": {
     "backgroundColor": "#fafafa",
     "borderStyle": "white",

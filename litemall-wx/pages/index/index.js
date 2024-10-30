@@ -18,11 +18,17 @@ Page({
     coupon: [],
     goodsCount: 0
   },
+  usingComponents: {
+    "van-image": "@vant/weapp/image/index",
+      "van-row": "@vant/weapp/row/index",
+      "van-col": "@vant/weapp/col/index",
+      "van-card": "@vant/weapp/card/index"
+  },
 
   onShareAppMessage: function() {
     return {
-      title: 'litemall小程序商场',
-      desc: '开源微信小程序商城',
+      title: 'AI喜糖',
+      desc: 'AI喜糖微信小程序商城',
       path: '/pages/index/index'
     }
   },
