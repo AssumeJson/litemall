@@ -1,6 +1,8 @@
 // 以下是业务服务器API地址
 // 本机开发时使用
 var WxApiRoot = 'http://localhost:8082/wx/';
+// 本机内网穿透测试
+// var WxApiRoot = 'http://tititx.natappfree.cc/wx/';
 // 局域网测试使用
 // var WxApiRoot = 'http://192.168.1.3:8080/wx/';
 // 云平台部署时使用
@@ -11,6 +13,8 @@ var WxApiRoot = 'http://localhost:8082/wx/';
 module.exports = {
   IndexUrl: WxApiRoot + 'home/index', //首页数据接口
   AboutUrl: WxApiRoot + 'home/about', //介绍信息
+    // 获取背景图
+  IndexImage: WxApiRoot + 'index/image',
 
   CatalogList: WxApiRoot + 'catalog/index', //分类目录全部分类数据接口
   CatalogCurrent: WxApiRoot + 'catalog/current', //分类目录当前分类数据接口

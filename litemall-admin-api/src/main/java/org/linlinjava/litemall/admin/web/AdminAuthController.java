@@ -127,11 +127,11 @@ public class AdminAuthController {
         logHelper.logAuthSucceed("登录");
 
         // userInfo
-        Map<String, Object> adminInfo = new HashMap<String, Object>();
+        Map<String, Object> adminInfo = new HashMap<>();
         adminInfo.put("nickName", admin.getUsername());
         adminInfo.put("avatar", admin.getAvatar());
 
-        Map<Object, Object> result = new HashMap<Object, Object>();
+        Map<Object, Object> result = new HashMap<>();
         result.put("token", currentUser.getSession().getId());
         result.put("adminInfo", adminInfo);
         return ResponseUtil.ok(result);

@@ -101,7 +101,12 @@
     "van-tag": "./lib/vant-weapp/tag/index",
     "van-icon": "./lib/vant-weapp/icon/index",
     "van-checkbox": "./lib/vant-weapp/checkbox/index",
-    "van-steps": "./lib/vant-weapp/steps/index"
+    "van-steps": "./lib/vant-weapp/steps/index",
+    "van-divider": "./lib/vant-weapp/divider/index",
+    "van-image": "./lib/vant-weapp/image/index",
+    "van-row": "./lib/vant-weapp/row/index",
+    "van-col": "./lib/vant-weapp/col/index",
+    "van-card": "./lib/vant-weapp/card/index"
   },
   "sitemapLocation": "sitemap.json"
 }

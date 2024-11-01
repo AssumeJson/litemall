@@ -26,6 +26,7 @@ export default {
       goods_list: 'List goods',
       goods_create: 'Add goods',
       goods_edit: 'Edit goods',
+      goods_banner: 'Banner',
       goods_comment: 'Comments',
       promotion: 'Promotion',
       promotion_ad: 'Ads',

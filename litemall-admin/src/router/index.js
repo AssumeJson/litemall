@@ -272,6 +272,16 @@ export const asyncRoutes = [
         hidden: true
       },
       {
+        path: 'banner',
+        component: () => import('@/views/goods/banner'),
+        name: 'goodsBanner',
+        meta: {
+          perms: ['GET /admin/storage/banner/list', 'POST /admin/storage/banner/create', 'POST /admin/storage/banner/update', 'POST /admin/storage/banner/delete'],
+          title: 'app.menu.goods_banner',
+          noCache: true
+        }
+      },
+      {
         path: 'comment',
         component: () => import('@/views/goods/comment'),
         name: 'goodsComment',

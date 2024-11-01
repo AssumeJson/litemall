@@ -16,13 +16,15 @@ Page({
     banner: [],
     channel: [],
     coupon: [],
-    goodsCount: 0
+    goodsCount: 0,
+    imageUrl: []// 初始值为空
   },
   usingComponents: {
-    "van-image": "@vant/weapp/image/index",
-      "van-row": "@vant/weapp/row/index",
-      "van-col": "@vant/weapp/col/index",
-      "van-card": "@vant/weapp/card/index"
+    "van-divider": "./lib/vant-weapp/divider/index",
+    "van-image": "./lib/vant-weapp/image/index",
+    "van-row": "./lib/vant-weapp/row/index",
+    "van-col": "./lib/vant-weapp/col/index",
+    "van-card": "./lib/vant-weapp/card/index"
   },
 
   onShareAppMessage: function() {
@@ -62,6 +64,15 @@ Page({
         goodsCount: res.data
       });
     });
+  },
+  getImage: function(){
+    let that = this;
+    util.request(api.IndexImage).then(function (res) {
+      that.setData({
+        imageUrl: res.data
+      });
+      console.log(res.data);
+    })
   },
   onLoad: function(options) {
 
@@ -116,6 +127,7 @@ Page({
     }
 
     this.getIndexData();
+    this.getImage();
   },
   onReady: function() {
     // 页面渲染完成

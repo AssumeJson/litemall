@@ -18,13 +18,16 @@
     <text style="margin-top: 70rpx; margin-left: 30rpx; margin-right: 56%;">尊敬的用户</text>
     <van-button round type="info" color="rgb(92, 34, 35);" style=" position: absolute; margin-top: 50rpx; margin-left: 68%;"><text style="color: white;">授权登录</text></van-button>
   </view>
-
+<view>
+  <!-- <image class="bannerImage" src="/static/images/bg.jpg"></image> -->
   <view class="m-menu">
+  <view class="bannerImage" style="background-image:url({{imageUrl[0]}});"></view>
     <navigator class="item" url="/pages/category/category?id={{item.id}}" wx:for="{{channel}}" wx:key="id">
       <image src="{{item.iconUrl}}" background-size="cover"></image>
       <text>{{item.name}}</text>
     </navigator>
   </view>
+</view>
   <!-- <view class="a-section a-coupon" wx:if="{{coupon.length > 0}}">
     <view class="h">
       <view class="title">
@@ -196,18 +199,20 @@
     </navigator>
   </view> -->
 
-  <view class="one">
-    <text class="oneT">爱情甜蜜</text>
+  <view class="one" style="background-image:url({{imageUrl[1]}});">
+    <!-- <text class="oneT">吾家有喜</text> -->
     <scroll-view scroll-x>
-      <view class="templateitem" wx:for="{{banner}}" wx:key="id" >
+      <view class="templateitem" wx:for="{{banner}}" wx:key="id">
         <block w x:if="{{item.link>0}}">
-        <view class="secend" >
-          <image class="live" src="{{item.url}}"></image>
-          <view class="cartName">{{item.name}}</view>
-          <view class="money">¥ {{item.id}}
-            <van-button class="moneyB" round color="rgb(92, 34, 35);" size="small" ><van-icon name="plus" color="white" /></van-button>
+          <view class="secend">
+            <image class="live" src="{{item.url}}"></image>
+            <view class="cartName">{{item.name}}</view>
+            <view class="money">¥ {{item.id}}
+              <van-button class="moneyB" round color="rgb(92, 34, 35);" size="small">
+                <van-icon name="plus" color="white" />
+              </van-button>
+            </view>
           </view>
-        </view>
         </block>
       </view>
     </scroll-view>

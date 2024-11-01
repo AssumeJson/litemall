@@ -26,6 +26,7 @@ export default {
       goods_list: '商品列表',
       goods_create: '商品上架',
       goods_edit: '商品编辑',
+      goods_banner: 'banner管理',
       goods_comment: '商品评论',
       promotion: '推广管理',
       promotion_ad: '广告管理',

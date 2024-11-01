@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -44,6 +46,21 @@ public class LitemallStorageService {
     }
 
     public List<LitemallStorage> querySelective(String key, String name, Integer page, Integer limit, String sort, String order) {
+        return querySelectiveByType(key, name, page, limit, sort, order, null);
+    }
+
+
+    /**
+     * @param key
+     * @param name
+     * @param page
+     * @param limit
+     * @param sort
+     * @param order
+     * @param preType 类型判断
+     * @return
+     */
+    public List<LitemallStorage> querySelectiveByType(String key, String name, Integer page, Integer limit, String sort, String order, String preType) {
         LitemallStorageExample example = new LitemallStorageExample();
         LitemallStorageExample.Criteria criteria = example.createCriteria();
 
@@ -53,6 +70,9 @@ public class LitemallStorageService {
         if (!StringUtils.isEmpty(name)) {
             criteria.andNameLike("%" + name + "%");
         }
+        if (!StringUtils.isEmpty(preType)) {
+            criteria.andTypeLike(preType + "%");
+        }
         criteria.andDeletedEqualTo(false);
 
         if (!StringUtils.isEmpty(sort) && !StringUtils.isEmpty(order)) {
@@ -61,5 +81,17 @@ public class LitemallStorageService {
 
         PageHelper.startPage(page, limit);
         return storageMapper.selectByExample(example);
+    }
+
+    public String[] querySelectiveByName(String banner) {
+        LitemallStorageExample example = new LitemallStorageExample();
+        LitemallStorageExample.Criteria criteria = example.createCriteria();
+        criteria.andNameLike(banner + "%");
+        criteria.andDeletedEqualTo(false);
+        PageHelper.startPage(1, 10);
+        final List<LitemallStorage> litemallStorages = storageMapper.selectByExample(example);
+        ArrayList<String> urls = new ArrayList<>();
+        litemallStorages.forEach(litemallStorage -> urls.add(litemallStorage.getUrl()));
+        return urls.toArray(new String[]{});
     }
 }

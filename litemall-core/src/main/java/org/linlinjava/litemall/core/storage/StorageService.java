@@ -94,4 +94,8 @@ public class StorageService {
     private String generateUrl(String keyName) {
         return storage.generateUrl(keyName);
     }
+
+    public String[] getImageUrl(String banner) {
+        return litemallStorageService.querySelectiveByName(banner);
+    }
 }
