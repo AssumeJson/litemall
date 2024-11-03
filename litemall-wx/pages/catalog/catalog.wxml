@@ -1,13 +1,37 @@
 <view class="container">
-  <view class="search">
+  <view style="height:{{navHeight}}px;background:#ffffff;position: sticky;top: 0px;z-index:99999; ">
+    <view class="custom-bar__wrapper" style="margin-top:{{searchMarginTop}}px; height: {{searchHeight}}px;width: {{searchWidth}}px;position:absolute;">
+      <view class="search">
+        <navigator url="/pages/search/search" class="input">
+          <van-icon style="left: 7rpx;" mode="aspectFit" name="search" />
+          <text class="search-group__input" type="text" class="txt">快试试搜索吧, 共{{goodsCount}}款好物</text>
+        </navigator>
+      </view>
+      <!-- <view class="search-group" style="position:absolute;"> -->
+      <!-- <image    style="left: 7rpx;" src="/images/icon/sousuo.png" mode="aspectFit" /> -->
+      <!-- <van-icon name="search"/> -->
+      <!-- <input  class="search-group__input" type="text" placeholder="搜搜校园日常动态吧！" placeholder-style="color:#161823;" confirm-type="search" value="{{search}}" maxlength="25" bindconfirm="search"></input> -->
+      <!-- </view> -->
+    </view>
+  </view>
+  <!-- <view class="search">
     <navigator url="/pages/search/search" class="input">
       <van-icon name="search"/>
       <text class="txt">快来试试搜索吧, 共{{goodsCount}}款好物</text>
     </navigator>
-  </view>
+  </view> -->
+
   <view class="catalog">
     <scroll-view class="nav" scroll-y="true">
-      <view class="item {{ currentCategory.id == item.id ? 'active' : ''}}" wx:for="{{categoryList}}" wx:key="id" data-id="{{item.id}}" data-index="{{index}}" bindtap="switchCate">{{item.name}}</view>
+      <view class="item {{ currentCategory.id == item.id ? 'active' : ''}}" wx:for="{{categoryList}}" wx:key="id" data-id="{{item.id}}" data-index="{{index}}" bindtap="switchCate">{{item.name}}
+      </view>
+  
+        <view>
+        <navigator url="/pages/category/category?id={{item.id}}" class="item {{(index+1) % 3 == 0 ? 'last' : ''}}" wx:key="id" wx:for="{{currentSubCategoryList}}">
+          <text class="txt">{{item.name}}</text>
+        </navigator>
+      </view>
+
     </scroll-view>
     <scroll-view class="cate" scroll-y="true">
       <navigator url="url" class="banner">

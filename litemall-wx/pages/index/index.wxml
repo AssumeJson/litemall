@@ -14,9 +14,9 @@
   </swiper>
   <!-- 添加一个悬浮卡片实现快捷登录 -->
   <view class="consultBtn">
-    <image mode="aspectFit" style="  width: 90rpx; height: 90rpx; border-radius: 50%;margin-top: 50rpx; margin-left: 35rpx;" src="/static/images/gang.jpg" />
+    <image mode="aspectFit" style="  width: 90rpx; height: 90rpx; border-radius: 50%;margin-top: 50rpx; margin-left: 35rpx;" src="{{userInfo.avatarUrl}}" />
     <text style="margin-top: 70rpx; margin-left: 30rpx; margin-right: 56%;">尊敬的用户</text>
-    <van-button round type="info" color="rgb(92, 34, 35);" style=" position: absolute; margin-top: 50rpx; margin-left: 68%;"><text style="color: white;">授权登录</text></van-button>
+    <van-button round bindtap="goLogin" type="info" color="rgb(92, 34, 35);" style=" position: absolute; margin-top: 50rpx; margin-left: 68%;"><text style="color: white;">{{userInfo.nickName}}</text></van-button>
   </view>
 <view>
   <!-- <image class="bannerImage" src="/static/images/bg.jpg"></image> -->

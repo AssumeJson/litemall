@@ -17,7 +17,11 @@ Page({
     channel: [],
     coupon: [],
     goodsCount: 0,
-    imageUrl: []// 初始值为空
+    imageUrl: [],// 初始值为空
+    userInfo: {
+      nickName: '授权登录',
+      avatarUrl: '/static/images/gang.jpg'
+    }
   },
   usingComponents: {
     "van-divider": "./lib/vant-weapp/divider/index",
@@ -133,7 +137,25 @@ Page({
     // 页面渲染完成
   },
   onShow: function() {
-    // 页面显示
+
+    //获取用户的登录信息
+    if (app.globalData.hasLogin) {
+      let userInfo = wx.getStorageSync('userInfo');
+      this.setData({
+        userInfo: userInfo,
+        hasLogin: true
+      });
+
+      let that = this;
+      util.request(api.UserIndex).then(function(res) {
+        if (res.errno === 0) {
+          that.setData({
+            order: res.data.order
+          });
+        }
+      });
+    }
+
   },
   onHide: function() {
     // 页面隐藏
@@ -155,5 +177,12 @@ Page({
         util.showErrorToast(res.errmsg);
       }
     })
+  },
+  goLogin() {
+    if (!this.data.hasLogin) {
+      wx.navigateTo({
+        url: "/pages/auth/login/login"
+      });
+    }
   },
 })
