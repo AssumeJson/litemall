@@ -45,7 +45,7 @@ public class LitemallCategoryService {
 
     public List<LitemallCategory> queryL2ByIds(List<Integer> ids) {
         LitemallCategoryExample example = new LitemallCategoryExample();
-        example.or().andIdIn(ids).andLevelEqualTo("L2").andDeletedEqualTo(false);
+        example.or().andPidIn(ids).andLevelEqualTo("L2").andDeletedEqualTo(false);
         return categoryMapper.selectByExample(example);
     }
 

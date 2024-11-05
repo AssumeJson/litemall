@@ -1,54 +1,79 @@
-<view class="container">
-  <view style="height:{{navHeight}}px;background:#ffffff;position: sticky;top: 0px;z-index:99999; ">
-    <view class="custom-bar__wrapper" style="margin-top:{{searchMarginTop}}px; height: {{searchHeight}}px;width: {{searchWidth}}px;position:absolute;">
-      <view class="search">
-        <navigator url="/pages/search/search" class="input">
-          <van-icon style="left: 7rpx;" mode="aspectFit" name="search" />
-          <text class="search-group__input" type="text" class="txt">快试试搜索吧, 共{{goodsCount}}款好物</text>
-        </navigator>
-      </view>
-      <!-- <view class="search-group" style="position:absolute;"> -->
-      <!-- <image    style="left: 7rpx;" src="/images/icon/sousuo.png" mode="aspectFit" /> -->
-      <!-- <van-icon name="search"/> -->
-      <!-- <input  class="search-group__input" type="text" placeholder="搜搜校园日常动态吧！" placeholder-style="color:#161823;" confirm-type="search" value="{{search}}" maxlength="25" bindconfirm="search"></input> -->
-      <!-- </view> -->
+<view style="height:{{navHeight}}px;background:#ffffff;position: sticky;top: 0px;z-index:99999; ">
+  <view class="custom-bar__wrapper" style="margin-top:{{searchMarginTop}}px; height: {{searchHeight}}px;width: {{searchWidth}}px;position:absolute;">
+    <view class="search">
+      <navigator url="/pages/search/search" class="input">
+        <van-icon style="left: 7rpx;" mode="aspectFit" name="search" />
+        <text class="search-group__input" type="text" class="txt">快试试搜索吧, 共{{goodsCount}}款好物</text>
+      </navigator>
     </view>
+    <!-- <view class="search-group" style="position:absolute;"> -->
+    <!-- <image    style="left: 7rpx;" src="/images/icon/sousuo.png" mode="aspectFit" /> -->
+    <!-- <van-icon name="search"/> -->
+    <!-- <input  class="search-group__input" type="text" placeholder="搜搜校园日常动态吧！" placeholder-style="color:#161823;" confirm-type="search" value="{{search}}" maxlength="25" bindconfirm="search"></input> -->
+    <!-- </view> -->
   </view>
-  <!-- <view class="search">
+</view>
+<!-- <view class="search">
     <navigator url="/pages/search/search" class="input">
       <van-icon name="search"/>
       <text class="txt">快来试试搜索吧, 共{{goodsCount}}款好物</text>
     </navigator>
   </view> -->
-
-  <view class="catalog">
-    <scroll-view class="nav" scroll-y="true">
-      <view class="item {{ currentCategory.id == item.id ? 'active' : ''}}" wx:for="{{categoryList}}" wx:key="id" data-id="{{item.id}}" data-index="{{index}}" bindtap="switchCate">{{item.name}}
+  <van-cell class="cellAd" title="--吾家有喜--幸福安康-- " is-link bind:click="showPopup" />
+  <van-popup show="{{ show }}" position="bottom" custom-style="height: 20%;  border-top-left-radius: 50rpx; border-top-right-radius: 50rpx;" bind:close="onClose">
+    <view wx:for="{{allCoupons}}">
+      {{item.name}}
+    </view>>
+  </van-popup>
+<view class="container">
+  <view class="catalog" style="height: {{screenHeight}}px;">
+    <scroll-view style="height: {{screenHeight}}px;" class="nav" scroll-y="{{true}}">
+      <view class="item {{ currentCategory.id == item.id ? 'active' : ''}}" wx:for="{{allSubCategoryList}}" wx:key="id" data-id="{{item.id}}" data-index="{{index}}" bindtap="switchCate">{{item.name}}
       </view>
-  
-        <view>
-        <navigator url="/pages/category/category?id={{item.id}}" class="item {{(index+1) % 3 == 0 ? 'last' : ''}}" wx:key="id" wx:for="{{currentSubCategoryList}}">
-          <text class="txt">{{item.name}}</text>
-        </navigator>
-      </view>
-
     </scroll-view>
-    <scroll-view class="cate" scroll-y="true">
-      <navigator url="url" class="banner">
+    <scroll-view class="cate" scroll-y="{{true}}" style="height: {{screenHeight}}px;" enhanced="{{true}}" show-scrollbar="{{false}}">
+      <swiper class="bottomSwiper" indicator-dots="true" autoplay="true" interval="3000" duration="1000">
+        <swiper-item wx:for="{{ads}}" wx:key="id">
+          <block wx:if="{{item.link>0}}">
+            <navigator url="/pages/goods/goods?id={{item.link}}">
+              <image src="{{item.url}}" background-size="cover"></image>
+            </navigator>
+          </block>
+          <block wx:else>
+            <image src="{{item.url}}" background-size="cover"></image>
+          </block>
+        </swiper-item>
+      </swiper>
+
+      <!-- <navigator url="url" class="banner">
         <image class="image" src="{{currentCategory.picUrl}}"></image>
         <view class="txt">{{currentCategory.frontName}}</view>
-      </navigator>
-      <view class="hd">
+      </navigator> -->
+      <!-- <van-sticky class="hd" offset-top="{{ 50 }}"> -->
+      <van-sticky class="hd">
         <text class="line"></text>
-        <text class="txt">{{currentCategory.name}}分类</text>
+        <text class="txt">{{currentCategory.name}}</text>
         <text class="line"></text>
-      </view>
-      <view class="bd">
+      </van-sticky>
+      <!-- <view class="hd">
+        <text class="line"></text>
+        <text class="txt">{{currentCategory.name}}</text>
+        <text class="line"></text>
+      </view> -->
+      <van-card num="{{}}" tag="{{item.isHot?'热卖':''}}" centered="true" origin-price="{{item.counterPrice}}" price="{{item.retailPrice}}" desc="{{item.brief}}" title="{{item.name}}" thumb="{{ item.picUrl }}" wx:for="{{ allGoodsCategories }}" wx:key="{{item.id}}" thumb-link="/pages/goods/goods?id={{item.id}}">
+        <view slot="footer">
+          <!-- <van-button size="mini">按钮</van-button> -->
+          <van-button round color="rgb(92, 34, 35);" size="mini" data-id="{{item.id}}" data-name="{{item.name}}" bind:click="handleClick">
+            <van-icon name="plus" color="white" />
+          </van-button>
+        </view>
+      </van-card>
+      <!-- <view class="bd">
         <navigator url="/pages/category/category?id={{item.id}}" class="item {{(index+1) % 3 == 0 ? 'last' : ''}}" wx:key="id" wx:for="{{currentSubCategoryList}}">
           <image class="icon" src="{{item.picUrl}}"></image>
           <text class="txt">{{item.name}}</text>
         </navigator>
-      </view>
+      </view> -->
     </scroll-view>
   </view>
 </view>

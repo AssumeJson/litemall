@@ -3,8 +3,12 @@ package org.linlinjava.litemall.wx.web;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.core.util.ResponseUtil;
+import org.linlinjava.litemall.db.domain.LitemallAd;
 import org.linlinjava.litemall.db.domain.LitemallCategory;
+import org.linlinjava.litemall.db.domain.LitemallGoods;
+import org.linlinjava.litemall.db.service.LitemallAdService;
 import org.linlinjava.litemall.db.service.LitemallCategoryService;
+import org.linlinjava.litemall.db.service.LitemallGoodsService;
 import org.linlinjava.litemall.wx.service.HomeCacheManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -17,6 +21,7 @@ import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 类目服务
@@ -29,6 +34,12 @@ public class WxCatalogController {
 
     @Autowired
     private LitemallCategoryService categoryService;
+
+    @Autowired
+    private LitemallGoodsService goodsService;
+
+    @Autowired
+    private LitemallAdService adService;
 
     @GetMapping("/getfirstcategory")
     public Object getFirstCategory() {
@@ -47,13 +58,15 @@ public class WxCatalogController {
     /**
      * 分类详情
      *
-     * @param id   分类类目ID。
-     *             如果分类类目ID是空，则选择第一个分类类目。
-     *             需要注意，这里分类类目是一级类目
+     * @param id 分类类目ID。
+     *           如果分类类目ID是空，则选择第一个分类类目。
+     *           需要注意，这里分类类目是一级类目
      * @return 分类详情
      */
     @GetMapping("index")
     public Object index(Integer id) {
+        // 获取所有AD,用作分类广告
+        List<LitemallAd> litemallAds = adService.queryIndex();
 
         // 所有一级分类目录
         List<LitemallCategory> l1CatList = categoryService.queryL1();
@@ -63,7 +76,7 @@ public class WxCatalogController {
         if (id != null) {
             currentCategory = categoryService.findById(id);
         } else {
-             if (l1CatList.size() > 0) {
+            if (!l1CatList.isEmpty()) {
                 currentCategory = l1CatList.get(0);
             }
         }
@@ -74,10 +87,34 @@ public class WxCatalogController {
             currentSubCategory = categoryService.queryByPid(currentCategory.getId());
         }
 
-        Map<String, Object> data = new HashMap<String, Object>();
+        // 获取所有二级分类
+        List<LitemallCategory> allSubCategoryList = null;
+        if (null != l1CatList) {
+            allSubCategoryList = categoryService.queryL2ByIds(l1CatList.stream()
+                    .map(LitemallCategory::getId)
+                    .collect(Collectors.toList()));
+        }
+
+        // 将一级分类降级为二级分类
+        if (null != allSubCategoryList) {
+            currentCategory = allSubCategoryList.get(0);
+        }
+
+        List<LitemallGoods> allGoodsCategories = null;
+        if (null != allSubCategoryList) {
+            allGoodsCategories = goodsService.queryByCategoryIds(allSubCategoryList.stream()
+                    .map(LitemallCategory::getId).collect(Collectors.toList()));
+        }
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("ads", litemallAds);
         data.put("categoryList", l1CatList);
         data.put("currentCategory", currentCategory);
         data.put("currentSubCategory", currentSubCategory);
+        // 添加所有二级分类
+        data.put("allSubCategoryList", allSubCategoryList);
+        // 添加所有在售的商品种类
+        data.put("allGoodsCategories", allGoodsCategories);
         return ResponseUtil.ok(data);
     }
 
@@ -88,7 +125,7 @@ public class WxCatalogController {
      */
     @GetMapping("all")
     public Object queryAll() {
-        //优先从缓存中读取
+        // 优先从缓存中读取
         if (HomeCacheManager.hasData(HomeCacheManager.CATALOG)) {
             return ResponseUtil.ok(HomeCacheManager.getCacheData(HomeCacheManager.CATALOG));
         }
@@ -97,7 +134,7 @@ public class WxCatalogController {
         // 所有一级分类目录
         List<LitemallCategory> l1CatList = categoryService.queryL1();
 
-        //所有子分类列表
+        // 所有子分类列表
         Map<Integer, List<LitemallCategory>> allList = new HashMap<>();
         List<LitemallCategory> sub;
         for (LitemallCategory category : l1CatList) {
@@ -120,7 +157,7 @@ public class WxCatalogController {
         data.put("currentCategory", currentCategory);
         data.put("currentSubCategory", currentSubCategory);
 
-        //缓存数据
+        // 缓存数据
         HomeCacheManager.loadData(HomeCacheManager.CATALOG, data);
         return ResponseUtil.ok(data);
     }
@@ -135,7 +172,7 @@ public class WxCatalogController {
     public Object current(@NotNull Integer id) {
         // 当前分类
         LitemallCategory currentCategory = categoryService.findById(id);
-        if(currentCategory == null){
+        if (currentCategory == null) {
             return ResponseUtil.badArgumentValue();
         }
         List<LitemallCategory> currentSubCategory = categoryService.queryByPid(currentCategory.getId());

@@ -6,6 +6,10 @@ Page({
     categoryList: [],
     currentCategory: {},
     currentSubCategoryList: {},
+    allSubCategoryList: {},
+    allGoodsCategories: [],
+    allCoupons: {},
+    banner: {},
     scrollLeft: 0,
     scrollTop: 0,
     goodsCount: 0,
@@ -17,11 +21,13 @@ Page({
     searchMarginTop: 0, // 搜索框上边距
     searchWidth: 0, // 搜索框宽度
     searchHeight: 0 ,// 搜索框高度
+    screenHeight: 0, // 屏幕可用高度
+    show: false,
   },
   onLoad: function(options) {
     this.getCatalog();
     var systeminfo=wx.getSystemInfoSync()
-    //console.log(systeminfo.windowHeight)
+    console.log(systeminfo.windowHeight)
     this.setData({
       movehight:systeminfo.windowHeight,
       movehight2:systeminfo.windowHeight-100
@@ -29,20 +35,21 @@ Page({
     this.setData({
       menuButtonInfo: wx.getMenuButtonBoundingClientRect()
     })
-    console.log(this.data.menuButtonInfo)
     const { top, width, height, right } = this.data.menuButtonInfo
     wx.getSystemInfo({
       success: (res) => {
         const { statusBarHeight } = res
         const margin = top - statusBarHeight
+        const { windowHeight } = res; // 获取当前屏幕可用高度
         this.setData({
           navHeight: (height + statusBarHeight + (margin * 2)),
           searchMarginTop: statusBarHeight + margin, // 状态栏 + 胶囊按钮边距
           searchHeight: height,  // 与胶囊按钮同高
-          searchWidth: right - width -20// 胶囊按钮右边坐标 - 胶囊按钮宽度 = 按钮左边可使用宽度
+          searchWidth: right - width -20,// 胶囊按钮右边坐标 - 胶囊按钮宽度 = 按钮左边可使用宽度
+          screenHeight: windowHeight - (height + statusBarHeight + (margin * 2)) - 60 // 因为这里是所谓的75px 设计稿，所以1px等于2rpx
         })
       }
-    })
+    });
   },
   onPullDownRefresh() {
     wx.showNavigationBarLoading() //在标题栏中显示加载
@@ -58,9 +65,12 @@ Page({
     });
     util.request(api.CatalogList).then(function(res) {
       that.setData({
+        ads: res.data.ads,
         categoryList: res.data.categoryList,
         currentCategory: res.data.currentCategory,
-        currentSubCategoryList: res.data.currentSubCategory
+        currentSubCategoryList: res.data.currentSubCategory,
+        allSubCategoryList: res.data.allSubCategoryList,
+        allGoodsCategories: res.data.allGoodsCategories
       });
       wx.hideLoading();
     });
@@ -69,7 +79,6 @@ Page({
         goodsCount: res.data
       });
     });
-
   },
   getCurrentCategory: function(id) {
     let that = this;
@@ -101,8 +110,30 @@ Page({
     if (this.data.currentCategory.id == event.currentTarget.dataset.id) {
       return false;
     }
-    console.log("nihao");
-    console.log(event.currentTarget);
     this.getCurrentCategory(event.currentTarget.dataset.id);
+  },
+  showPopup() {
+    var that = this;
+    if(that.allCoupons == null){
+      util.request(api.CouponList).then(function(res){
+        that.setData({
+          allCoupons: res.data.list
+        });
+      });
+    }
+    this.setData({ show: true });
+  },
+
+  onClose() {
+    this.setData({ show: false });
+  },
+  handleClick: function(event) {
+    const dataset = event.currentTarget.dataset;
+    const id = dataset.id;
+    const name = dataset.name;
+
+    wx.navigateTo({
+      url: `/pages/goods/goods?id=${id}`
+    });
   }
 })

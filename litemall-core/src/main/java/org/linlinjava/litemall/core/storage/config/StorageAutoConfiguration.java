@@ -5,6 +5,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.net.InetAddress;
+
 @Configuration
 @EnableConfigurationProperties(StorageProperties.class)
 public class StorageAutoConfiguration {
@@ -14,6 +16,7 @@ public class StorageAutoConfiguration {
     public StorageAutoConfiguration(StorageProperties properties) {
         this.properties = properties;
     }
+
 
     @Bean
     public StorageService storageService() {
@@ -38,8 +41,18 @@ public class StorageAutoConfiguration {
     @Bean
     public LocalStorage localStorage() {
         LocalStorage localStorage = new LocalStorage();
+
         StorageProperties.Local local = this.properties.getLocal();
-        localStorage.setAddress(local.getAddress());
+
+        String serverIp = "";
+        try {
+            serverIp = InetAddress.getLocalHost().getHostAddress();
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+        // 获取服务器的端口号
+        String fullUrl = "http://" + serverIp + ":"  + local.getAddress();
+        localStorage.setAddress(fullUrl);
         localStorage.setStoragePath(local.getStoragePath());
         return localStorage;
     }
