@@ -104,7 +104,9 @@ public class LitemallStorageService {
 
     private LitemallStorage generateFullUrlLitemallStorage(LitemallStorageExample example) {
         final LitemallStorage litemallStorage = storageMapper.selectOneByExample(example);
-        litemallStorage.setUrl(fullUrl(litemallStorage.getUrl()));
+        if (litemallStorage != null) {
+            litemallStorage.setUrl(fullUrl(litemallStorage.getUrl()));
+        }
         return litemallStorage;
     }
 

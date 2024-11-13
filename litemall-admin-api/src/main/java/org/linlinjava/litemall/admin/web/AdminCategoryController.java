@@ -5,7 +5,9 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.linlinjava.litemall.admin.annotation.RequiresPermissionsDesc;
 import org.linlinjava.litemall.admin.vo.CategoryVo;
+import org.linlinjava.litemall.core.storage.config.StorageProperties;
 import org.linlinjava.litemall.core.util.ResponseUtil;
+import org.linlinjava.litemall.core.util.URLUtil;
 import org.linlinjava.litemall.db.domain.LitemallCategory;
 import org.linlinjava.litemall.db.service.LitemallCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,9 @@ public class AdminCategoryController {
     @Autowired
     private LitemallCategoryService categoryService;
 
+    @Autowired
+    private StorageProperties properties;
+
     @RequiresPermissions("admin:category:list")
     @RequiresPermissionsDesc(menu = {"商场管理", "类目管理"}, button = "查询")
     @GetMapping("/list")
@@ -39,8 +44,17 @@ public class AdminCategoryController {
             CategoryVo categoryVO = new CategoryVo();
             categoryVO.setId(category.getId());
             categoryVO.setDesc(category.getDesc());
-            categoryVO.setIconUrl(category.getIconUrl());
-            categoryVO.setPicUrl(category.getPicUrl());
+            if (category.getIconUrl().startsWith(properties.getLocal().getAddress())){
+                categoryVO.setIconUrl(URLUtil.fullUrl(category.getIconUrl()));
+            }else {
+                categoryVO.setIconUrl(category.getIconUrl());
+            }
+
+            if (category.getPicUrl().startsWith(properties.getLocal().getAddress())){
+                categoryVO.setPicUrl(URLUtil.fullUrl(category.getPicUrl()));
+            }else {
+                categoryVO.setPicUrl(categoryVO.getPicUrl());
+            }
             categoryVO.setKeywords(category.getKeywords());
             categoryVO.setName(category.getName());
             categoryVO.setLevel(category.getLevel());
@@ -51,8 +65,17 @@ public class AdminCategoryController {
                 CategoryVo subCategoryVo = new CategoryVo();
                 subCategoryVo.setId(subCategory.getId());
                 subCategoryVo.setDesc(subCategory.getDesc());
-                subCategoryVo.setIconUrl(subCategory.getIconUrl());
-                subCategoryVo.setPicUrl(subCategory.getPicUrl());
+                if (subCategory.getIconUrl().startsWith(properties.getLocal().getAddress())){
+                    subCategoryVo.setIconUrl(URLUtil.fullUrl(subCategory.getIconUrl()));
+                }else {
+                    subCategoryVo.setIconUrl(subCategory.getIconUrl());
+                }
+
+                if (subCategory.getPicUrl().startsWith(properties.getLocal().getAddress())){
+                    subCategoryVo.setPicUrl(URLUtil.fullUrl(subCategory.getPicUrl()));
+                }else {
+                    subCategoryVo.setPicUrl(subCategory.getPicUrl());
+                }
                 subCategoryVo.setKeywords(subCategory.getKeywords());
                 subCategoryVo.setName(subCategory.getName());
                 subCategoryVo.setLevel(subCategory.getLevel());
