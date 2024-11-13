@@ -47,6 +47,7 @@ public class StorageService {
         String key = generateKey(fileName);
         storage.store(inputStream, contentLength, contentType, key);
 
+        // 创建url，尽量进行拼接，实现多端兼容
         String url = generateUrl(key);
         LitemallStorage storageInfo = new LitemallStorage();
         storageInfo.setName(fileName);

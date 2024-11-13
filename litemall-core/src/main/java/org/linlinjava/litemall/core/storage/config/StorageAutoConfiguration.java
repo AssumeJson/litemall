@@ -5,8 +5,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.net.InetAddress;
-
 @Configuration
 @EnableConfigurationProperties(StorageProperties.class)
 public class StorageAutoConfiguration {
@@ -23,16 +21,21 @@ public class StorageAutoConfiguration {
         StorageService storageService = new StorageService();
         String active = this.properties.getActive();
         storageService.setActive(active);
-        if (active.equals("local")) {
-            storageService.setStorage(localStorage());
-        } else if (active.equals("aliyun")) {
-            storageService.setStorage(aliyunStorage());
-        } else if (active.equals("tencent")) {
-            storageService.setStorage(tencentStorage());
-        } else if (active.equals("qiniu")) {
-            storageService.setStorage(qiniuStorage());
-        } else {
-            throw new RuntimeException("当前存储模式 " + active + " 不支持");
+        switch (active) {
+            case "local":
+                storageService.setStorage(localStorage());
+                break;
+            case "aliyun":
+                storageService.setStorage(aliyunStorage());
+                break;
+            case "tencent":
+                storageService.setStorage(tencentStorage());
+                break;
+            case "qiniu":
+                storageService.setStorage(qiniuStorage());
+                break;
+            default:
+                throw new RuntimeException("当前存储模式 " + active + " 不支持");
         }
 
         return storageService;
@@ -43,16 +46,9 @@ public class StorageAutoConfiguration {
         LocalStorage localStorage = new LocalStorage();
 
         StorageProperties.Local local = this.properties.getLocal();
-
-        String serverIp = "";
-        try {
-            serverIp = InetAddress.getLocalHost().getHostAddress();
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
-        }
         // 获取服务器的端口号
-        String fullUrl = "http://" + serverIp + ":"  + local.getAddress();
-        localStorage.setAddress(fullUrl);
+        // localStorage.setAddress(fullUrl(serverIp, local));
+        localStorage.setAddress(local.getAddress());
         localStorage.setStoragePath(local.getStoragePath());
         return localStorage;
     }

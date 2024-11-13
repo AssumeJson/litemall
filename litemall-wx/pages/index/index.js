@@ -75,7 +75,7 @@ Page({
       that.setData({
         imageUrl: res.data
       });
-      console.log(res.data);
+      console.log("首页图片url",res.data);
     })
   },
   onLoad: function(options) {

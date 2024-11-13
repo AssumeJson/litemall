@@ -8,4 +8,8 @@ package org.linlinjava.litemall.core.consts;
  */
 public class AdminConstant {
     public static final String STORAGE_FLAG = "-";
+
+    public static final String HTTP_PREFIX = "http://";
+
+    public static final String HTTP_COLON = ":";
 }
