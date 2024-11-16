@@ -169,14 +169,28 @@ scroll-view {
 .money {
   margin-left: 30rpx;
   /* 左边缩进20像素 */
-  margin-top: 30rpx;
+  margin-top: 10rpx;
+  display: flex;
+  justify-content: flex-end; /* 将子元素推到最右边 */
+  align-items: center;        /* 垂直居中 */
+}
+.buttonCard {
+  background-color: rgb(92, 34, 35);
+  width: 50rpx; /* 按钮直径 */
+  height: 50rpx; /* 保持宽度和高度一致，形成圆形 */
+  border-radius: 50%; /* 使按钮变成圆形 */
+  border: none; /* 移除边框 */
+  display: flex; /* 使用 Flexbox 布局 */
+  justify-content: center; /* 水平居中 */
+  align-items: center; /* 垂直居中 */
+  cursor: pointer; /* 鼠标悬停时显示手型指针 */
+  margin-left: 63%;
+}
+.buttonCard .van-icon {
+  font-size: 25rpx; /* 图标大小 */
+  color: white; /* 图标颜色 */
 }
 
-.moneyB {
-  margin-left: 50%;
-  /* 左边缩进20像素 */
-  margin-top: 30rpx;
-}
 
 .a-section {
   width: 750rpx;

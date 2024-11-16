@@ -6,6 +6,7 @@ import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.db.domain.LitemallAd;
 import org.linlinjava.litemall.db.domain.LitemallCategory;
 import org.linlinjava.litemall.db.domain.LitemallGoods;
+import org.linlinjava.litemall.db.dto.LitemallGoodsAndItemName;
 import org.linlinjava.litemall.db.service.LitemallAdService;
 import org.linlinjava.litemall.db.service.LitemallCategoryService;
 import org.linlinjava.litemall.db.service.LitemallGoodsService;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -106,6 +108,18 @@ public class WxCatalogController {
                     .map(LitemallCategory::getId).collect(Collectors.toList()));
         }
 
+        // 获取所有对应的goods 包含的itemName
+        List<LitemallGoodsAndItemName> goodsAndItemNameList = new ArrayList<>();
+        if (null != allSubCategoryList) {
+            allSubCategoryList.forEach(each -> {
+                LitemallGoodsAndItemName goodsAndItemName = new LitemallGoodsAndItemName();
+                goodsAndItemName.setItemName(each.getName());
+                goodsAndItemName.setLitemallGoods(goodsService.queryByCategoryId(each.getId()));
+                goodsAndItemNameList.add(goodsAndItemName);
+            });
+        }
+
+
         Map<String, Object> data = new HashMap<>();
         data.put("ads", litemallAds);
         data.put("categoryList", l1CatList);
@@ -115,6 +129,8 @@ public class WxCatalogController {
         data.put("allSubCategoryList", allSubCategoryList);
         // 添加所有在售的商品种类
         data.put("allGoodsCategories", allGoodsCategories);
+        // 包含每个二级菜单对应的商品
+        data.put("goodsAndItemNameList", goodsAndItemNameList);
         return ResponseUtil.ok(data);
     }
 

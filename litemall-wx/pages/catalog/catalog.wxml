@@ -19,12 +19,25 @@
       <text class="txt">快来试试搜索吧, 共{{goodsCount}}款好物</text>
     </navigator>
   </view> -->
-  <van-cell class="cellAd" title="--吾家有喜--幸福安康-- " is-link bind:click="showPopup" />
-  <van-popup show="{{ show }}" position="bottom" custom-style="height: 20%;  border-top-left-radius: 50rpx; border-top-right-radius: 50rpx;" bind:close="onClose">
-    <view wx:for="{{allCoupons}}">
-      {{item.name}}
-    </view>>
-  </van-popup>
+<!-- <van-cell class="cellAd" title="--吾家有喜--幸福安康-- " is-link bind:click="showPopup" /> -->
+<!-- <view class="cellAdSwiper"  > -->
+  <view class="flex-container"  >
+  <swiper class="cellAdSwiper" :indicator-dots="false" vertical="true" autoplay="true" interval="3000" duration="1000">
+    <swiper-item wx:for="{{ads}}" wx:key="id">
+      <view class="right-aligned-text" bindtap="showPopup"> 📢 {{ item.name }}
+      </view>
+    </swiper-item>
+  </swiper>
+  <view class="right-side-view" bindtap="showPopup" right-side-view style="color: slategrey; font-size: small; margin-right: 30rpx;">
+    <van-icon name="arrow" />
+  </view>
+</view>
+<van-popup show="{{ show }}" position="bottom" custom-style="height: 20%;  border-top-left-radius: 50rpx; border-top-right-radius: 50rpx;" bind:close="onClose">
+<view class="popupTopView"> </view>
+  <view class="popupSecendView" wx:for="{{ads}}">
+    {{item.name}}
+  </view>
+</van-popup>
 <view class="container">
   <view class="catalog" style="height: {{screenHeight}}px;">
     <scroll-view style="height: {{screenHeight}}px;" class="nav" scroll-y="{{true}}">
@@ -50,24 +63,35 @@
         <view class="txt">{{currentCategory.frontName}}</view>
       </navigator> -->
       <!-- <van-sticky class="hd" offset-top="{{ 50 }}"> -->
-      <van-sticky class="hd">
+      <!-- <van-sticky class="hd">
         <text class="line"></text>
         <text class="txt">{{currentCategory.name}}</text>
         <text class="line"></text>
-      </van-sticky>
+      </van-sticky> -->
       <!-- <view class="hd">
         <text class="line"></text>
         <text class="txt">{{currentCategory.name}}</text>
         <text class="line"></text>
       </view> -->
-      <van-card num="{{}}" tag="{{item.isHot?'热卖':''}}" centered="true" origin-price="{{item.counterPrice}}" price="{{item.retailPrice}}" desc="{{item.brief}}" title="{{item.name}}" thumb="{{ item.picUrl }}" wx:for="{{ allGoodsCategories }}" wx:key="{{item.id}}" thumb-link="/pages/goods/goods?id={{item.id}}">
-        <view slot="footer">
-          <!-- <van-button size="mini">按钮</van-button> -->
-          <van-button round color="rgb(92, 34, 35);" size="mini" data-id="{{item.id}}" data-name="{{item.name}}" bind:click="handleClick">
+      <view wx:for="{{ goodsAndItemNameList }}" wx:key="{{item.id}}">
+        <van-sticky class="hd">
+          <text class="line"></text>
+          <text class="txt">{{item.itemName}}</text>
+          <text class="line"></text>
+        </van-sticky>
+        <van-card class="custom-card" num="{{}}" tag="{{item.isHot?'热卖':''}}" centered="true" origin-price="{{item.counterPrice}}" price="{{item.retailPrice}}" desc="{{item.brief}}" title="{{item.name}}" thumb="{{ item.picUrl }}" wx:for="{{ item.litemallGoods }}" wx:key="{{item.id}}" thumb-link="/pages/goods/goods?id={{item.id}}">
+          <view class="footerContainer" slot="footer">
+            <!-- <van-button round color="rgb(92, 34, 35);" size="mini" data-id="{{item.id}}" data-name="{{item.name}}" bind:click="handleClick">
+              <van-icon name="plus" color="white" />
+            </van-button> -->
+            <!-- 自己画一个按钮 -->
+            <button class="buttonCard" data-id="{{item.id}}" data-name="{{item.name}}" bindtap="handleClick">
             <van-icon name="plus" color="white" />
-          </van-button>
-        </view>
-      </van-card>
+            </button>
+          </view>
+        </van-card>
+
+      </view>
       <!-- <view class="bd">
         <navigator url="/pages/category/category?id={{item.id}}" class="item {{(index+1) % 3 == 0 ? 'last' : ''}}" wx:key="id" wx:for="{{currentSubCategoryList}}">
           <image class="icon" src="{{item.picUrl}}"></image>

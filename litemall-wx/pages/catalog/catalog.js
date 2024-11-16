@@ -8,6 +8,7 @@ Page({
     currentSubCategoryList: {},
     allSubCategoryList: {},
     allGoodsCategories: [],
+    goodsAndItemNameList: {},
     allCoupons: {},
     banner: {},
     scrollLeft: 0,
@@ -23,6 +24,16 @@ Page({
     searchHeight: 0 ,// 搜索框高度
     screenHeight: 0, // 屏幕可用高度
     show: false,
+    assembleList: [{
+      title: '李菲儿发起了拼团'
+    },
+    {
+      title: '赵小丽发起了拼团'
+    },
+    {
+      title: '张璐璐璐发起了拼团'
+    }
+  ],
   },
   onLoad: function(options) {
     this.getCatalog();
@@ -70,7 +81,8 @@ Page({
         currentCategory: res.data.currentCategory,
         currentSubCategoryList: res.data.currentSubCategory,
         allSubCategoryList: res.data.allSubCategoryList,
-        allGoodsCategories: res.data.allGoodsCategories
+        allGoodsCategories: res.data.allGoodsCategories,
+        goodsAndItemNameList: res.data.goodsAndItemNameList
       });
       wx.hideLoading();
     });
@@ -113,6 +125,7 @@ Page({
     this.getCurrentCategory(event.currentTarget.dataset.id);
   },
   showPopup() {
+    console.log("dianji");
     var that = this;
     if(that.allCoupons == null){
       util.request(api.CouponList).then(function(res){
