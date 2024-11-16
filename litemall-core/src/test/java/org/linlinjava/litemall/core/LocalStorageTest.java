@@ -19,6 +19,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.util.List;
 
 @WebAppConfiguration
@@ -52,8 +53,15 @@ public class LocalStorageTest {
         LitemallStorageExample example = new LitemallStorageExample();
         example.createCriteria().getAllCriteria();
         final List<LitemallStorage> litemallStorages = storeManager.selectByExample(example);
+        String serverIp = "";
+        try {
+            serverIp = InetAddress.getLocalHost().getHostAddress();
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+        String finalServerIp = serverIp;
         litemallStorages.forEach(litemallStorage -> {
-            litemallStorage.setUrl(address + litemallStorage.getKey());
+            litemallStorage.setUrl("http://"+ finalServerIp + ":"+address + litemallStorage.getKey());
             storeManager.updateByPrimaryKeySelective(litemallStorage);
         });
 

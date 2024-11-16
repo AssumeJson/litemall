@@ -34,7 +34,7 @@ public class LitemallStorageService {
     public LitemallStorage findByKey(String key) {
         LitemallStorageExample example = new LitemallStorageExample();
         example.or().andKeyEqualTo(key).andDeletedEqualTo(false);
-        return generateFullUrlLitemallStorage(example);
+        return storageMapper.selectOneByExample(example);
     }
 
     public int update(LitemallStorage storageInfo) {
@@ -43,15 +43,11 @@ public class LitemallStorageService {
     }
 
     public LitemallStorage findById(Integer id) {
-        final LitemallStorage litemallStorage = storageMapper.selectByPrimaryKey(id);
-        litemallStorage.setUrl(fullUrl(litemallStorage.getUrl()));
-        return litemallStorage;
+        return storageMapper.selectByPrimaryKey(id);
     }
 
     public List<LitemallStorage> querySelective(String key, String name, Integer page, Integer limit, String sort, String order) {
-        final List<LitemallStorage> litemallStorages = querySelectiveByType(key, name, page, limit, sort, order, null);
-        litemallStorages.forEach(litemallStorage -> litemallStorage.setUrl(fullUrl(litemallStorage.getUrl())));
-        return litemallStorages;
+        return querySelectiveByType(key, name, page, limit, sort, order, null);
     }
 
 
@@ -85,9 +81,7 @@ public class LitemallStorageService {
         }
 
         PageHelper.startPage(page, limit);
-        final List<LitemallStorage> litemallStorages = storageMapper.selectByExample(example);
-        litemallStorages.forEach(litemallStorage -> litemallStorage.setUrl(fullUrl(litemallStorage.getUrl())));
-        return litemallStorages;
+        return storageMapper.selectByExample(example);
     }
 
     public String[] querySelectiveByName(String banner) {
@@ -98,26 +92,8 @@ public class LitemallStorageService {
         PageHelper.startPage(1, 10);
         final List<LitemallStorage> litemallStorages = storageMapper.selectByExample(example);
         ArrayList<String> urls = new ArrayList<>();
-        litemallStorages.forEach(litemallStorage -> urls.add(fullUrl(litemallStorage.getUrl())));
+        litemallStorages.forEach(litemallStorage -> urls.add(litemallStorage.getUrl()));
         return urls.toArray(new String[]{});
-    }
-
-    private LitemallStorage generateFullUrlLitemallStorage(LitemallStorageExample example) {
-        final LitemallStorage litemallStorage = storageMapper.selectOneByExample(example);
-        if (litemallStorage != null) {
-            litemallStorage.setUrl(fullUrl(litemallStorage.getUrl()));
-        }
-        return litemallStorage;
-    }
-
-    public static String fullUrl(String url) {
-        String serverIp = "";
-        try {
-            serverIp = InetAddress.getLocalHost().getHostAddress();
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
-        }
-        return "http://" + serverIp + ":" + url;
     }
 
 

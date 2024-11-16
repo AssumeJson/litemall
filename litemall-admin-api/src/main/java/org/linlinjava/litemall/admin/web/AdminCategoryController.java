@@ -44,17 +44,8 @@ public class AdminCategoryController {
             CategoryVo categoryVO = new CategoryVo();
             categoryVO.setId(category.getId());
             categoryVO.setDesc(category.getDesc());
-            if (category.getIconUrl().startsWith(properties.getLocal().getAddress())){
-                categoryVO.setIconUrl(URLUtil.fullUrl(category.getIconUrl()));
-            }else {
-                categoryVO.setIconUrl(category.getIconUrl());
-            }
-
-            if (category.getPicUrl().startsWith(properties.getLocal().getAddress())){
-                categoryVO.setPicUrl(URLUtil.fullUrl(category.getPicUrl()));
-            }else {
-                categoryVO.setPicUrl(categoryVO.getPicUrl());
-            }
+            categoryVO.setIconUrl(category.getIconUrl());
+            categoryVO.setPicUrl(categoryVO.getPicUrl());
             categoryVO.setKeywords(category.getKeywords());
             categoryVO.setName(category.getName());
             categoryVO.setLevel(category.getLevel());
@@ -65,17 +56,8 @@ public class AdminCategoryController {
                 CategoryVo subCategoryVo = new CategoryVo();
                 subCategoryVo.setId(subCategory.getId());
                 subCategoryVo.setDesc(subCategory.getDesc());
-                if (subCategory.getIconUrl().startsWith(properties.getLocal().getAddress())){
-                    subCategoryVo.setIconUrl(URLUtil.fullUrl(subCategory.getIconUrl()));
-                }else {
-                    subCategoryVo.setIconUrl(subCategory.getIconUrl());
-                }
-
-                if (subCategory.getPicUrl().startsWith(properties.getLocal().getAddress())){
-                    subCategoryVo.setPicUrl(URLUtil.fullUrl(subCategory.getPicUrl()));
-                }else {
-                    subCategoryVo.setPicUrl(subCategory.getPicUrl());
-                }
+                subCategoryVo.setIconUrl(subCategory.getIconUrl());
+                subCategoryVo.setPicUrl(subCategory.getPicUrl());
                 subCategoryVo.setKeywords(subCategory.getKeywords());
                 subCategoryVo.setName(subCategory.getName());
                 subCategoryVo.setLevel(subCategory.getLevel());

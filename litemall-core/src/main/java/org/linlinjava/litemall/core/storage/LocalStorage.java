@@ -8,12 +8,16 @@ import org.springframework.core.io.UrlResource;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.stream.Stream;
+
+import static org.linlinjava.litemall.core.consts.AdminConstant.HTTP_COLON;
+import static org.linlinjava.litemall.core.consts.AdminConstant.HTTP_PREFIX;
 
 /**
  * 服务器本地对象存储服务
@@ -106,6 +110,12 @@ public class LocalStorage implements Storage {
     @Override
     public String generateUrl(String keyName) {
 
-        return address + keyName;
+        String serverIp = "";
+        try {
+            serverIp = InetAddress.getLocalHost().getHostAddress();
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+        return HTTP_PREFIX + serverIp + HTTP_COLON + address + keyName;
     }
 }
