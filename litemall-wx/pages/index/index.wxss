@@ -184,7 +184,8 @@ scroll-view {
   justify-content: center; /* 水平居中 */
   align-items: center; /* 垂直居中 */
   cursor: pointer; /* 鼠标悬停时显示手型指针 */
-  margin-left: 63%;
+  margin-left: 56%;
+  margin-bottom: 5%;
 }
 .buttonCard .van-icon {
   font-size: 25rpx; /* 图标大小 */

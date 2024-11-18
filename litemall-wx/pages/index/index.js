@@ -75,7 +75,6 @@ Page({
       that.setData({
         imageUrl: res.data
       });
-      console.log("首页图片url",res.data);
     })
   },
   onLoad: function(options) {
@@ -177,6 +176,13 @@ Page({
         util.showErrorToast(res.errmsg);
       }
     })
+  },
+  handleItemClick: function(event) {
+    const itemId = event.currentTarget.dataset.id;
+    // console.log('Clicked item ID:', itemId);
+    wx.navigateTo({
+      url: '../goods/goods?id=' + itemId
+    });
   },
   goLogin() {
     if (!this.data.hasLogin) {

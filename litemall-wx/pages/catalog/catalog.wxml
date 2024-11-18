@@ -21,7 +21,7 @@
   </view> -->
 <!-- <van-cell class="cellAd" title="--吾家有喜--幸福安康-- " is-link bind:click="showPopup" /> -->
 <!-- <view class="cellAdSwiper"  > -->
-  <view class="flex-container"  >
+<view class="flex-container">
   <swiper class="cellAdSwiper" :indicator-dots="false" vertical="true" autoplay="true" interval="3000" duration="1000">
     <swiper-item wx:for="{{ads}}" wx:key="id">
       <view class="right-aligned-text" bindtap="showPopup"> 📢 {{ item.name }}
@@ -32,19 +32,23 @@
     <van-icon name="arrow" />
   </view>
 </view>
+<!-- 弹出层 -->
 <van-popup show="{{ show }}" position="bottom" custom-style="height: 20%;  border-top-left-radius: 50rpx; border-top-right-radius: 50rpx;" bind:close="onClose">
-<view class="popupTopView"> </view>
+  <view class="popupTopView"> </view>
   <view class="popupSecendView" wx:for="{{ads}}">
     {{item.name}}
   </view>
 </van-popup>
+
 <view class="container">
   <view class="catalog" style="height: {{screenHeight}}px;">
-    <scroll-view style="height: {{screenHeight}}px;" class="nav" scroll-y="{{true}}">
-      <view class="item {{ currentCategory.id == item.id ? 'active' : ''}}" wx:for="{{allSubCategoryList}}" wx:key="id" data-id="{{item.id}}" data-index="{{index}}" bindtap="switchCate">{{item.name}}
+    <scroll-view scroll-into-view="scroll-{{currentIndex}}" style="height: {{screenHeight}}px;" class="nav" scroll-y="{{true}}">
+      <!-- <view class="item {{ currentCategory.id == item.id ? 'active' : ''}}" wx:for="{{allSubCategoryList}}" wx:key="*this" data-id="{{item.id}}" data-index="{{index}}" bindtap="switchCate">{{item.name}} -->
+
+        <view class="category-item {{currentIndex === index ? 'active' : ''}}" wx:for="{{allSubCategoryList}}" wx:key="*this" data-id="{{item.id}}" data-index="{{index}}" bindtap="switchCate">{{item.name}}
       </view>
     </scroll-view>
-    <scroll-view class="cate" scroll-y="{{true}}" style="height: {{screenHeight}}px;" enhanced="{{true}}" show-scrollbar="{{false}}">
+    <scroll-view bindscroll="onScroll" scroll-into-view="{{tabIndex}}" class="cate" scroll-y="{{true}}" style="height: {{screenHeight}}px;" enhanced="{{true}}" show-scrollbar="{{false}}">
       <swiper class="bottomSwiper" indicator-dots="true" autoplay="true" interval="3000" duration="1000">
         <swiper-item wx:for="{{ads}}" wx:key="id">
           <block wx:if="{{item.link>0}}">
@@ -57,36 +61,16 @@
           </block>
         </swiper-item>
       </swiper>
+      <view wx:for="{{ goodsAndItemNameList }}" wx:key="index">
+      <!-- 实现点击左右联动，如果定位在吸顶位置，在index 1 点击到index0 位置的时候，只会显示吸顶元素，吸顶元素下面的商品详情不会显示 -->
+      <view id="scroll-{{index}}" ></view>
+        <view class="sticky-header"  data-id="{{item.itemName}}">{{item.itemName}}</view>
 
-      <!-- <navigator url="url" class="banner">
-        <image class="image" src="{{currentCategory.picUrl}}"></image>
-        <view class="txt">{{currentCategory.frontName}}</view>
-      </navigator> -->
-      <!-- <van-sticky class="hd" offset-top="{{ 50 }}"> -->
-      <!-- <van-sticky class="hd">
-        <text class="line"></text>
-        <text class="txt">{{currentCategory.name}}</text>
-        <text class="line"></text>
-      </van-sticky> -->
-      <!-- <view class="hd">
-        <text class="line"></text>
-        <text class="txt">{{currentCategory.name}}</text>
-        <text class="line"></text>
-      </view> -->
-      <view wx:for="{{ goodsAndItemNameList }}" wx:key="{{item.id}}">
-        <van-sticky class="hd">
-          <text class="line"></text>
-          <text class="txt">{{item.itemName}}</text>
-          <text class="line"></text>
-        </van-sticky>
         <van-card class="custom-card" num="{{}}" tag="{{item.isHot?'热卖':''}}" centered="true" origin-price="{{item.counterPrice}}" price="{{item.retailPrice}}" desc="{{item.brief}}" title="{{item.name}}" thumb="{{ item.picUrl }}" wx:for="{{ item.litemallGoods }}" wx:key="{{item.id}}" thumb-link="/pages/goods/goods?id={{item.id}}">
           <view class="footerContainer" slot="footer">
-            <!-- <van-button round color="rgb(92, 34, 35);" size="mini" data-id="{{item.id}}" data-name="{{item.name}}" bind:click="handleClick">
-              <van-icon name="plus" color="white" />
-            </van-button> -->
             <!-- 自己画一个按钮 -->
             <button class="buttonCard" data-id="{{item.id}}" data-name="{{item.name}}" bindtap="handleClick">
-            <van-icon name="plus" color="white" />
+              <van-icon name="plus" color="white" />
             </button>
           </view>
         </van-card>

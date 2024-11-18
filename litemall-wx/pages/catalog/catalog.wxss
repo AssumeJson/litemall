@@ -140,10 +140,9 @@ page {
 }
 
 /* 自定义card 的样式 */
-.custom-card /deep/ .van-card__thumb {
-  border-radius: 30rpx;
-}
-.van-card__img thumb-class {
+.custom-card .van-card {
+  background-color: white;
+  font-size: large;
   border-radius: 30rpx;
 }
 
@@ -167,7 +166,8 @@ page {
   height: 90rpx;
   color: #333;
   font-size: 28rpx;
-  border-left: 6rpx solid #fff;
+  /* border-left: 6rpx solid #fff; */
+  background-color: #ededed;
 }
 
 .catalog .nav .item.active {
@@ -176,7 +176,29 @@ page {
   font-size: 32rpx;
   border-left: 6rpx solid rgb(92, 34, 35);
   /* border-left: 6rpx solid #ab956d; */
+  background-color: white;
 }
+
+.category-item {
+  text-align: center;
+  line-height: 90rpx;
+  width: 162rpx;
+  height: 90rpx;
+  color: #333;
+  font-size: 28rpx;
+  /* border-left: 6rpx solid #fff; */
+  background-color: #ededed;
+}
+
+.category-item.active {
+  /* color: #ab956d; */
+  color: rgb(92, 34, 35);
+  font-size: 32rpx;
+  border-left: 6rpx solid rgb(92, 34, 35);
+  /* border-left: 6rpx solid #ab956d; */
+  background-color: white;
+}
+
 
 .catalog .cate {
   border-left: 1px solid #fafafa;
@@ -213,20 +235,14 @@ page {
   width: 100%;
 }
 
-.catalog .hd {
-  height: 108rpx;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.catalog .hd .txt {
-  font-size: 24rpx;
-  text-align: center;
-  color: #333;
-  padding: 0 10rpx;
-  width: auto;
+/* 吸顶样式 */
+.sticky-header {
+  position: -webkit-sticky; /* 兼容性 */
+  position: sticky;
+  top: -1rpx;
+  background-color: #fff; /* 背景颜色 */
+  padding: 25rpx; /* 根据需要调整内边距 */
+  z-index: 10;        /* 确保在其他内容之上 */
 }
 
 .catalog .hd .line {

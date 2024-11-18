@@ -106,7 +106,8 @@
     "van-image": "./lib/vant-weapp/image/index",
     "van-row": "./lib/vant-weapp/row/index",
     "van-col": "./lib/vant-weapp/col/index",
-    "van-card": "./lib/vant-weapp/card/index"
+    "van-card": "./lib/vant-weapp/card/index",
+    "van-sticky": "./lib/vant-weapp/sticky/index"
   },
   "sitemapLocation": "sitemap.json"
 }
