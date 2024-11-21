@@ -116,6 +116,6 @@ public class LocalStorage implements Storage {
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
-        return HTTP_PREFIX + serverIp + HTTP_COLON + address + keyName;
+        return address + keyName;
     }
 }

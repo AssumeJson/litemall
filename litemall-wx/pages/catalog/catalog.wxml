@@ -45,7 +45,7 @@
     <scroll-view scroll-into-view="scroll-{{currentIndex}}" style="height: {{screenHeight}}px;" class="nav" scroll-y="{{true}}">
       <!-- <view class="item {{ currentCategory.id == item.id ? 'active' : ''}}" wx:for="{{allSubCategoryList}}" wx:key="*this" data-id="{{item.id}}" data-index="{{index}}" bindtap="switchCate">{{item.name}} -->
 
-        <view class="category-item {{currentIndex === index ? 'active' : ''}}" wx:for="{{allSubCategoryList}}" wx:key="*this" data-id="{{item.id}}" data-index="{{index}}" bindtap="switchCate">{{item.name}}
+      <view class="category-item {{currentIndex === index ? 'active' : ''}}" wx:for="{{allSubCategoryList}}" wx:key="*this" data-id="{{item.id}}" data-index="{{index}}" bindtap="switchCate">{{item.name}}
       </view>
     </scroll-view>
     <scroll-view bindscroll="onScroll" scroll-into-view="{{tabIndex}}" class="cate" scroll-y="{{true}}" style="height: {{screenHeight}}px;" enhanced="{{true}}" show-scrollbar="{{false}}">
@@ -62,12 +62,27 @@
         </swiper-item>
       </swiper>
       <view wx:for="{{ goodsAndItemNameList }}" wx:key="index">
-      <!-- 实现点击左右联动，如果定位在吸顶位置，在index 1 点击到index0 位置的时候，只会显示吸顶元素，吸顶元素下面的商品详情不会显示 -->
-      <view id="scroll-{{index}}" ></view>
-        <view class="sticky-header"  data-id="{{item.itemName}}">{{item.itemName}}</view>
+        <!-- 实现点击左右联动，如果定位在吸顶位置，在index 1 点击到index0 位置的时候，只会显示吸顶元素，吸顶元素下面的商品详情不会显示 -->
+        <view id="scroll-{{index}}"></view>
+        <view class="sticky-header" data-id="{{item.itemName}}">{{item.itemName}}</view>
 
-        <van-card class="custom-card" num="{{}}" tag="{{item.isHot?'热卖':''}}" centered="true" origin-price="{{item.counterPrice}}" price="{{item.retailPrice}}" desc="{{item.brief}}" title="{{item.name}}" thumb="{{ item.picUrl }}" wx:for="{{ item.litemallGoods }}" wx:key="{{item.id}}" thumb-link="/pages/goods/goods?id={{item.id}}">
+        <van-card class="custom-card" num="{{}}" tag="{{item.isHot?'热卖':''}}" centered="true" origin-price="{{item.counterPrice}}" price="{{item.retailPrice}}" desc="{{item.brief}}" title="{{item.name}}" thumb="{{ item.picUrl }}" wx:for="{{ item.litemallGoodsDto }}" wx:key="{{item.id}}" thumb-link="/pages/goods/goods?id={{item.id}}">
           <view class="footerContainer" slot="footer">
+            <view class="buttonGroup">
+              <block wx:if="{{item.goodsCartNum}}">
+              <!-- <block wx:if="{{item.name}}"> -->
+                <!-- <block> -->
+                <button class="buttonCut" data-id="{{item.id}}" data-name="{{item.name}}" bindtap="buttonCut">
+                  <text style="color: 92, 34, 35;">−</text>
+                </button>
+                <view class="itemNumContainer">
+                  <text class="itemNum">{{item.goodsCartNum}}</text>
+                </view>
+              </block>
+              <!-- <block wx:else="{{item.name}}">
+                <view class="blockClass"></view>
+              </block> -->
+            </view>
             <!-- 自己画一个按钮 -->
             <button class="buttonCard" data-id="{{item.id}}" data-name="{{item.name}}" bindtap="handleClick">
               <van-icon name="plus" color="white" />

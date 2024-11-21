@@ -1,7 +1,5 @@
 package org.linlinjava.litemall.db.dto;
 
-import org.linlinjava.litemall.db.domain.LitemallGoods;
-
 import java.util.List;
 
 /**
@@ -12,7 +10,8 @@ import java.util.List;
  */
 public class LitemallGoodsAndItemName {
     private String itemName;
-        private List<LitemallGoods> litemallGoods;
+
+    private List<LitemallGoodsDto> litemallGoodsDto;
 
     public String getItemName() {
         return itemName;
@@ -22,11 +21,11 @@ public class LitemallGoodsAndItemName {
         this.itemName = itemName;
     }
 
-    public List<LitemallGoods> getLitemallGoods() {
-        return litemallGoods;
+    public List<LitemallGoodsDto> getLitemallGoodsDto() {
+        return litemallGoodsDto;
     }
 
-    public void setLitemallGoods(List<LitemallGoods> litemallGoods) {
-        this.litemallGoods = litemallGoods;
+    public void setLitemallGoodsDto(List<LitemallGoodsDto> litemallGoodsDto) {
+        this.litemallGoodsDto = litemallGoodsDto;
     }
 }

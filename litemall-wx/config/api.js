@@ -2,7 +2,7 @@
 // 本机开发时使用
 var WxApiRoot = 'http://localhost:8082/wx/';
 // 本机内网穿透测试
-// var WxApiRoot = 'http://tititx.natappfree.cc/wx/';
+// var WxApiRoot = 'http://ph8nti.natappfree.cc/wx/';
 // 局域网测试使用
 // var WxApiRoot = 'http://192.168.1.3:8080/wx/';
 // 云平台部署时使用
@@ -40,6 +40,7 @@ module.exports = {
   CartAdd: WxApiRoot + 'cart/add', // 添加商品到购物车
   CartFastAdd: WxApiRoot + 'cart/fastadd', // 立即购买商品
   CartUpdate: WxApiRoot + 'cart/update', // 更新购物车的商品
+  CartCut: WxApiRoot + 'cart/cut', // 购物车点击减少
   CartDelete: WxApiRoot + 'cart/delete', // 删除购物车的商品
   CartChecked: WxApiRoot + 'cart/checked', // 选择或取消选择商品
   CartGoodsCount: WxApiRoot + 'cart/goodscount', // 获取购物车商品件数

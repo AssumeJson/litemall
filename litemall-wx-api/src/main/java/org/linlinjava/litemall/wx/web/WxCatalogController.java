@@ -1,24 +1,30 @@
 package org.linlinjava.litemall.wx.web;
 
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.core.util.ResponseUtil;
 import org.linlinjava.litemall.db.domain.LitemallAd;
+import org.linlinjava.litemall.db.domain.LitemallCart;
 import org.linlinjava.litemall.db.domain.LitemallCategory;
 import org.linlinjava.litemall.db.domain.LitemallGoods;
 import org.linlinjava.litemall.db.dto.LitemallGoodsAndItemName;
+import org.linlinjava.litemall.db.dto.LitemallGoodsDto;
 import org.linlinjava.litemall.db.service.LitemallAdService;
+import org.linlinjava.litemall.db.service.LitemallCartService;
 import org.linlinjava.litemall.db.service.LitemallCategoryService;
 import org.linlinjava.litemall.db.service.LitemallGoodsService;
+import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.linlinjava.litemall.wx.service.HomeCacheManager;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotNull;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,6 +49,9 @@ public class WxCatalogController {
     @Autowired
     private LitemallAdService adService;
 
+    @Autowired
+    private LitemallCartService cartService;
+
     @GetMapping("/getfirstcategory")
     public Object getFirstCategory() {
         // 所有一级分类目录
@@ -66,7 +75,7 @@ public class WxCatalogController {
      * @return 分类详情
      */
     @GetMapping("index")
-    public Object index(Integer id) {
+    public Object index(Integer id, @LoginUser Integer userId) {
         // 获取所有AD,用作分类广告
         List<LitemallAd> litemallAds = adService.queryIndex();
 
@@ -114,11 +123,35 @@ public class WxCatalogController {
             allSubCategoryList.forEach(each -> {
                 LitemallGoodsAndItemName goodsAndItemName = new LitemallGoodsAndItemName();
                 goodsAndItemName.setItemName(each.getName());
-                goodsAndItemName.setLitemallGoods(goodsService.queryByCategoryId(each.getId()));
+                final List<LitemallGoods> litemallGoods = goodsService.queryByCategoryId(each.getId());
+                List<LitemallGoodsDto> litemallGoodsDtos = new ArrayList<>();
+                litemallGoods.forEach(goods -> {
+                    LitemallGoodsDto litemallGoodsDto = new LitemallGoodsDto();
+                    try {
+                        BeanUtils.copyProperties(goods,litemallGoodsDto);
+                        // isHot
+                        litemallGoodsDto.setHot(goods.getIsHot());
+                        // isNew
+                        litemallGoodsDto.setNew(goods.getIsNew());
+                        litemallGoodsDto.setOnSale(goods.getIsOnSale());
+                        litemallGoodsDto.setDeleted(goods.getDeleted());
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                    litemallGoodsDtos.add(litemallGoodsDto);
+                });
+                goodsAndItemName.setLitemallGoodsDto(litemallGoodsDtos);
                 goodsAndItemNameList.add(goodsAndItemName);
             });
         }
-
+        if (null != userId) {
+            final List<LitemallCart> litemallCarts = cartService.queryByUid(userId);
+            litemallCarts.forEach(cart -> goodsAndItemNameList.forEach(goodsAndItemName -> goodsAndItemName.getLitemallGoodsDto().forEach(goodsDto -> {
+                if (cart.getGoodsId().equals(goodsDto.getId())){
+                    goodsDto.setGoodsCartNum(cart.getNumber().toString());
+                }
+            })));
+        }
 
         Map<String, Object> data = new HashMap<>();
         data.put("ads", litemallAds);

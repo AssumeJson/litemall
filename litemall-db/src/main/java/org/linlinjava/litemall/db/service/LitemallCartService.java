@@ -120,4 +120,10 @@ public class LitemallCartService {
         example.or().andProductIdEqualTo(id);
         cartMapper.updateByExampleSelective(cart, example);
     }
+
+    public LitemallCart findByIdAndUserId(Integer goodsId, Integer userId) {
+        LitemallCartExample example = new LitemallCartExample();
+        example.or().andUserIdEqualTo(userId).andGoodsIdEqualTo(goodsId).andDeletedEqualTo(false);
+        return cartMapper.selectOneByExample(example);
+    }
 }

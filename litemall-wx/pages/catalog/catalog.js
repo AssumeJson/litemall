@@ -1,9 +1,11 @@
 var util = require('../../utils/util.js');
 var api = require('../../config/api.js');
 
+const app = getApp();
+
 Page({
   data: {
-    tabIndex: "scroll-0",//右边瞄点项
+    tabIndex: "scroll-0", //右边瞄点项
     categoryList: [],
     currentCategory: {},
     currentSubCategoryList: {},
@@ -98,7 +100,7 @@ Page({
       tabBarHeight: tabBarHeightRpx
     });
 
-    console.log('tabBarHeight:', tabBarHeightRpx);
+    // console.log('tabBarHeight:', tabBarHeightRpx);
   },
   onPullDownRefresh() {
     wx.showNavigationBarLoading() //在标题栏中显示加载
@@ -130,6 +132,26 @@ Page({
       });
     });
   },
+
+  getCatalogOnShow: function () {
+    //CatalogList
+    let that = this;
+    // wx.showLoading({
+    //   title: '加载中...',
+    // });
+    util.request(api.CatalogList).then(function (res) {
+      that.setData({
+        ads: res.data.ads,
+        categoryList: res.data.categoryList,
+        currentCategory: res.data.currentCategory,
+        currentSubCategoryList: res.data.currentSubCategory,
+        allSubCategoryList: res.data.allSubCategoryList,
+        allGoodsCategories: res.data.allGoodsCategories,
+        goodsAndItemNameList: res.data.goodsAndItemNameList
+      });
+      // wx.hideLoading();
+    });
+  },
   getCurrentCategory: function (id) {
     let that = this;
     util.request(api.CatalogCurrent, {
@@ -146,6 +168,7 @@ Page({
     // 页面渲染完成
   },
   onShow: function () {
+    this.getCatalogOnShow();
     // 页面显示
   },
   onHide: function () {
@@ -153,6 +176,11 @@ Page({
   },
   onUnload: function () {
     // 页面关闭
+  },
+
+  onTabItemTap: function(item) {
+    // 用户点击底部 tab 时的逻辑
+    // console.log('onTabItemTap', item);
   },
 
   scrollToCategory: function (index) {
@@ -175,25 +203,10 @@ Page({
     var currentTarget = event.currentTarget;
     const offsetTop = event.target.offsetTop;
 
-    if (this.currentIndex > index) {
-      
-    }
-
-    this.setData({tabIndex: `scroll-${index}`})
-    // console.log("scroll:",this.tabIndex);
-    // // 滚动到指定分类
-    // const query = wx.createSelectorQuery().in(this);
-    // query.selectAll('.sticky-header').boundingClientRect(function (rects) {
-    //   console.log("rects:", rects);
-    //   if (rects) {
-    //     const targetRect = rects[index];
-    //     that.setData({
-    //       currentIndex: index
-    //     });
-
-    //   }
-    // }).exec();
-    // this.getCurrentCategory(event.currentTarget.dataset.id);
+    this.setData({
+      tabIndex: `scroll-${index}`,
+      currentIndex: index
+    })
   },
   showPopup() {
     var that = this;
@@ -208,7 +221,6 @@ Page({
       show: true
     });
   },
-
 
   getScreenHeight: function () {
     const systemInfo = wx.getSystemInfoSync();
@@ -228,7 +240,6 @@ Page({
     // 选择所有吸顶标题
     query.selectAll('.sticky-header').boundingClientRect(function (rects) {
       if (rects) {
-        console.log("rects:",rects);
         let newIndex = 0;
         for (let i = 0; i < rects.length; i++) {
           if (rects[i].top <= offsetTop) {
@@ -251,6 +262,32 @@ Page({
       show: false
     });
   },
+  buttonCut: function (event) {
+    const goodsId = event.target.dataset.id;
+    const that = this;
+    for (let index = 0; index < that.data.goodsAndItemNameList.length; index++) {
+      const element = that.data.goodsAndItemNameList[index].litemallGoodsDto;
+      for (let indexSecend = 0; indexSecend < element.length; indexSecend++) {
+        const element2 = element[indexSecend];
+        if (element2.id === goodsId ) {
+          element2.goodsCartNum--;
+          break;
+        }
+      }
+    }
+    this.setData({
+      goodsAndItemNameList: that.data.goodsAndItemNameList
+    });
+    // update
+    util.request(api.CartCut, {
+      goodsId: goodsId
+    })
+    .then(function (res) {
+      that.setData({
+      });
+    });
+
+  },
   handleClick: function (event) {
     const dataset = event.currentTarget.dataset;
     const id = dataset.id;
@@ -259,5 +296,5 @@ Page({
     wx.navigateTo({
       url: `/pages/goods/goods?id=${id}`
     });
-  }
+  },
 })

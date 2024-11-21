@@ -112,17 +112,43 @@ page {
   margin-left: 30rpx;
   color: rgb(92, 34, 35);
 }
-
-.footerContainer {
-  display: flex;
-  justify-content: flex-end; /* 将子元素推到最右边 */
-  align-items: center;        /* 垂直居中 */
+.custom-card {
+  position: relative; /* 确保父容器是相对定位 */
 }
 
+.custom-card .footerContainer {
+  display: flex;
+  justify-content: flex-end; /* 将内容推到右侧 */
+  align-items: center; /* 垂直居中对齐 */
+  margin-top: 20rpx;
+}
 
-/* 自定义按钮样式 */
+.buttonGroup {
+  display: flex;
+  align-items: center;
+  height: 60rpx;
+}
+
+.buttonCut {
+  color: rgb(92, 34, 35);
+  border: 1px solid rgb(92, 34, 35); /* 设置边框颜色和宽度 */
+  margin-left: 10px; /* 按钮之间的间距 */
+  padding: 5px 10px; /* 调整按钮内边距 */
+  width: 50rpx; /* 按钮直径 */
+  height: 50rpx; /* 保持宽度和高度一致，形成圆形 */
+  border-radius: 50%; /* 使按钮变成圆形 */
+  /* border: none; 移除边框 */
+  display: flex; /* 使用 Flexbox 布局 */
+  justify-content: center; /* 水平居中 */
+  align-items: center; /* 垂直居中 */
+  cursor: pointer; /* 鼠标悬停时显示手型指针 */
+}
+
 .buttonCard {
+  position: absolute; /* 绝对定位 */
   background-color: rgb(92, 34, 35);
+  margin-left: 10rpx; /* 按钮之间的间距 */
+  padding: 5rpx 10rpx; /* 调整按钮内边距 */
   width: 50rpx; /* 按钮直径 */
   height: 50rpx; /* 保持宽度和高度一致，形成圆形 */
   border-radius: 50%; /* 使按钮变成圆形 */
@@ -131,10 +157,32 @@ page {
   justify-content: center; /* 水平居中 */
   align-items: center; /* 垂直居中 */
   cursor: pointer; /* 鼠标悬停时显示手型指针 */
-  margin-left: 90% ;
+  margin-right: 30rpx ;
 }
 
-.buttonCard .van-icon {
+.itemNumContainer {
+  width: 80rpx; /* 固定宽度 */
+  height: 30rpx; /* 固定高度 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 10px; /* 调整与按钮的间距 */
+  margin-right: 88rpx;
+  /* background-color: #f0f0f0; 可选：背景颜色 */
+  /* border-radius: 50%; 可选：使容器呈圆形 */
+}
+
+
+.itemNum {
+  margin: 0 10rpx; /* 商品数量与按钮之间的间距 */
+}
+
+/* .blockClass {
+  margin-left: 90%;
+  width: 150rpx;
+} */
+
+.buttonCard .van-icon  {
   font-size: 25rpx; /* 图标大小 */
   color: white; /* 图标颜色 */
 }
