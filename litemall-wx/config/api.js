@@ -42,6 +42,7 @@ module.exports = {
   CartUpdate: WxApiRoot + 'cart/update', // 更新购物车的商品
   CartCut: WxApiRoot + 'cart/cut', // 购物车点击减少
   CartDelete: WxApiRoot + 'cart/delete', // 删除购物车的商品
+  CartDeleteByGoodsId:  WxApiRoot + 'cart/deleteByGoodsId', // 删除购物车指定商品
   CartChecked: WxApiRoot + 'cart/checked', // 选择或取消选择商品
   CartGoodsCount: WxApiRoot + 'cart/goodscount', // 获取购物车商品件数
   CartCheckout: WxApiRoot + 'cart/checkout', // 下单前信息确认

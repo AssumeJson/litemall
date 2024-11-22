@@ -54,7 +54,7 @@
   "tabBar": {
     "backgroundColor": "#fafafa",
     "borderStyle": "white",
-    "selectedColor": "#AB956D",
+    "selectedColor": "#5C2223",
     "color": "#666",
     "list": [
       {
@@ -107,7 +107,8 @@
     "van-row": "./lib/vant-weapp/row/index",
     "van-col": "./lib/vant-weapp/col/index",
     "van-card": "./lib/vant-weapp/card/index",
-    "van-sticky": "./lib/vant-weapp/sticky/index"
+    "van-sticky": "./lib/vant-weapp/sticky/index",
+    "van-swipe-cell": "./lib/vant-weapp/swipe-cell/index"
   },
   "sitemapLocation": "sitemap.json"
 }

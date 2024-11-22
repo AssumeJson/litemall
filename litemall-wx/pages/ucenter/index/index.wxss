@@ -1,23 +1,38 @@
 page {
   height: 100%;
   width: 100%;
-  background: #f4f4f4;
+  /* background: #f4f4f4; */
+  background-color: white;
 }
 
 .container {
   background: #f4f4f4;
+  background-color: white;
   height: auto;
   overflow: hidden;
   width: 100%;
 }
 
 .profile-info {
-  background-color: #ab956d;
+  /* background: linear-gradient(to right, 
+  #A65C5C,
+  #934D4D 25%, 
+  #813E3E 50%, 
+  #6E3030 75%, 
+  #5C2223
+  ); */
+  background: linear-gradient(to bottom, 
+  #5C2223, 
+  #813E3E 25%, 
+  #A65C5C 50%, 
+  #CC7C7C 65%, 
+  #FFFFFF);
   color: #f4f4f4;
   display: flex;
   align-items: center;
   padding: 30rpx;
   font-size: 28rpx;
+  height: 500rpx;
 }
 
 .profile-info .avatar {
@@ -65,6 +80,9 @@ page {
   height: 86rpx;
   line-height: 86rpx;
   border-bottom: 1px solid #fafafa;
+  background-color: white;
+  margin-top: 30rpx;
+  /* margin-bottom: 30rpx; */
 }
 
 .user_row_left {
@@ -116,10 +134,26 @@ page {
   margin-left: 40rpx;
 }
 
+.icon-container {
+  display: inline-block;
+  position: relative;
+  width: 50px; /* 设置容器宽度 */
+  height: 50px; /* 设置容器高度 */
+  border-radius: 50%; /* 将容器变成圆形 */
+  background-color: #f4f4f4; /* 设置背景颜色为灰色 */
+  overflow: hidden; /* 防止图标超出圆形背景 */
+}
+
 .user_column_item_image {
   width: 50rpx;
   height: 50rpx;
-  margin-top: 30rpx;
+  /* margin-top: 30rpx; */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* 使图标在圆形背景中居中 */
+  max-width: 100%; /* 确保图标不会超出容器 */
+  max-height: 100%; /* 确保图标不会超出容器 */
 }
 
 .user_column_item_text {

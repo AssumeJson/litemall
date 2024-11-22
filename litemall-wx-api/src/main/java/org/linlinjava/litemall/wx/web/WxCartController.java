@@ -301,18 +301,18 @@ public class WxCartController {
     }
 
     @GetMapping("cut")
-    public Object cut(Integer goodsId,@LoginUser Integer userId) {
+    public Object cut(Integer goodsId, @LoginUser Integer userId) {
         if (userId == null) {
             return ResponseUtil.unlogin();
         }
 
-       LitemallCart litemallCart =  cartService.findByIdAndUserId(goodsId,userId);
-        if(litemallCart!=null){
+        LitemallCart litemallCart = cartService.findByIdAndUserId(goodsId, userId);
+        if (litemallCart != null) {
             final int newNumber = litemallCart.getNumber() - 1;
-            if (newNumber > 0 ){
+            if (newNumber > 0) {
                 litemallCart.setNumber((short) (newNumber));
                 cartService.updateById(litemallCart);
-            }else {
+            } else {
                 cartService.deleteById(litemallCart.getId());
             }
         }
@@ -378,12 +378,32 @@ public class WxCartController {
 
         List<Integer> productIds = JacksonUtil.parseIntegerList(body, "productIds");
 
-        if (productIds == null || productIds.size() == 0) {
+        if (productIds == null || productIds.isEmpty()) {
             return ResponseUtil.badArgument();
         }
 
         cartService.delete(productIds, userId);
         return index(userId);
+    }
+
+
+    /**
+     * 购物车删除指定商品
+     *
+     * @param userId  用户ID
+     * @param goodsId 商品ID
+     * @return 购物车信息 成功则 { errno: 0, errmsg: '成功', data: xxx } 失败则 { errno: XXX, errmsg: XXX }
+     */
+    @GetMapping("deleteByGoodsId")
+    public Object deleteByGoodsId(@LoginUser Integer userId, Integer goodsId) {
+        if (userId == null) {
+            return ResponseUtil.unlogin();
+        }
+        if (goodsId == null) {
+            return ResponseUtil.badArgument();
+        }
+        cartService.delete(goodsId, userId);
+        return ResponseUtil.ok();
     }
 
     /**
